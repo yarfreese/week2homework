@@ -62,30 +62,65 @@ class Contacts
   #########
 
   def format_contact contact
+    # the following line changes contact[:city] to "Seattle WA":
+    # %{\"#{contact[:full_name]} of #{contact[:city] << " " << contact[:state]}\" <#{contact[:email]}>}
+    %{\"#{contact[:full_name]} of #{contact[:city]} #{contact[:state]}\" <#{contact[:email]}>}
   end
 
   def all
+    @contacts
   end
 
   def formatted_list
+    @contacts.map {|line| format_contact line }.join("\n")
+    # @contacts.each_value.format_contact()
+    # @contacts.collect {|line| format_contact line }
+    # below just gives error (i.e., no output) if .join("\n") not on it
+    # @contacts.map {|line| format_contact line }
+    # @contacts.each {|line| print line }
+    # contacts.each { |x| format_contact x } 
+    # @contacts.count
+    # format_contact @contacts[0..@contacts.count]
+    #  contact_hash.each { |h| format_contact h }
+    #  contact_hash[1}
+    # format_contact @contacts[0] 
+    # @contacts.each_index { |i| format_contact @contacts[i] }
+    # @contacts.each.format_contact
+    #  @contacts.each.contact_hash.format_contact
+    # temp_str = ""
+    # str = @contacts.each do |i|
+    #   format_contact i
+    # end
+    # print @contacts.count
+    # format_contact @contacts[0..num_entries.to_i]
   end
 
   def full_names
+    @contacts.map do |line|
+      line[:full_name]
+    end
   end
 
   def cities
+    @contacts.map do |line|
+      line[:city]
+    end.uniq
   end
 
   def append_contact contact
+    @contacts.push(contact)
   end
 
   def delete_contact index
+    @contacts.delete_at(index.to_i)
   end
 
   def search string
+    @contacts.map {|line| line if line.value?(string) }.compact
   end
 
   def all_sorted_by field
+    @contacts.map.sort_by { |x| x[field] }
   end
   
 end
